@@ -122,3 +122,36 @@ def search_student():
 def on_closing():
     save_students(file_path, students)
     root.destroy()
+
+
+# Начало программы
+root = tk.Tk()
+root.title("Учёт посещаемости студентов")
+root.geometry("600x400")
+
+# Запрос пути к файлу у пользователя
+file_path = simpledialog.askstring("Выбор файла", "Введите путь к файлу списка студентов (оставьте пустым для нового):")
+if not file_path:
+    file_path = "attendance list.json"
+
+students = load_students(file_path)
+
+# Элементы интерфейса
+button_frame = tk.Frame(root)
+button_frame.pack(pady=10)
+
+tk.Button(button_frame, text="Добавить студента", command=add_student).grid(row=0, column=0, padx=5)
+tk.Button(button_frame, text="Удалить студента", command=remove_student).grid(row=0, column=1, padx=5)
+tk.Button(button_frame, text="Отметить посещение", command=mark_attendance).grid(row=0, column=2, padx=5)
+tk.Button(button_frame, text="Массовое добавление", command=add_many_students).grid(row=0, column=3, padx=5)
+tk.Button(button_frame, text="Низкая посещаемость", command=show_low_attendance).grid(row=1, column=0, padx=5, pady=5)
+tk.Button(button_frame, text="Процент посещаемости", command=show_attendance_percent).grid(row=1, column=1, padx=5, pady=5)
+tk.Button(button_frame, text="Поиск студента", command=search_student).grid(row=1, column=2, padx=5, pady=5)
+
+text_box = tk.Text(root, height=15, width=70)
+text_box.pack(pady=10)
+
+update_display()# Яна
+
+root.protocol("WM_DELETE_WINDOW", on_closing) # Яна
+root.mainloop() # Яна
