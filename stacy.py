@@ -95,3 +95,31 @@ def search_student():
 def on_closing():
     save_students(file_path, students)
     root.destroy()
+
+# Функция обновления дисплея
+def update_display():
+    text_box.delete("1.0", tk.END)
+    for student, records in students.items():
+        text_box.insert(tk.END, f"{student}: {records}\n")
+
+# Функция добавления студента
+def add_student():
+    name = simpledialog.askstring("Добавить студента", "Введите фамилию студента:") # Яна
+    if name:
+        if name in students:
+            messagebox.showinfo("Инфо", "Студент уже существует.")
+        else:
+            students[name] = []
+            save_students(file_path, students)
+            update_display()
+
+# Функция удаления студента
+def remove_student():
+    name = simpledialog.askstring("Удалить студента", "Введите фамилию студента:") # Кира
+    if name:
+        if name in students:
+            del students[name]
+            save_students(file_path, students)
+            update_display()
+        else:
+            messagebox.showerror("Ошибка", "Студент не найден.")
