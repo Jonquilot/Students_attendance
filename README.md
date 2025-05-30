@@ -1,4 +1,4 @@
-<center>![Обложка](https://pp.userapi.com/oFQ53bj9VBEe-ZgnlgiC3lIX3zPotxd1wYSTSg/ayj-8rKwF-w.jpg) </center>
+![Обложка](https://pp.userapi.com/oFQ53bj9VBEe-ZgnlgiC3lIX3zPotxd1wYSTSg/ayj-8rKwF-w.jpg)
 <h1 align="center">📘 Учёт посещаемости студентов</h1>
 
 Создано студентами группы [24ФПЛ2](https://nnov.hse.ru/ba/ling/)
