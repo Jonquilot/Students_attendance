@@ -4,6 +4,48 @@ import tkinter as tk
 from tkinter import simpledialog, messagebox
 
 
+# Функция загрузки списка студентов
+def load_students(filename):
+    if os.path.exists(filename):
+        try:
+            with open(filename, "r", encoding="utf-8") as file:
+                return json.load(file)
+        except (json.JSONDecodeError, IOError):
+            messagebox.showerror("Ошибка", "Файл поврежден или некорректный формат.") # Тимур
+            return {}
+    else:
+        return {}
+
+# Функция сохранения списка студентов
+def save_students(filename, students):
+    try:
+        with open(filename, "w", encoding="utf-8") as file:
+            json.dump(students, file, ensure_ascii=False, indent=4)
+    except IOError:
+        messagebox.showerror("Ошибка", "Не удалось сохранить данные.")
+
+# Функция добавления студента
+def add_student():
+    name = simpledialog.askstring("Добавить студента", "Введите фамилию студента:") # Яна
+    if name:
+        if name in students:
+            messagebox.showinfo("Инфо", "Студент уже существует.")
+        else:
+            students[name] = []
+            save_students(file_path, students)
+            update_display()
+
+# Функция удаления студента
+def remove_student():
+    name = simpledialog.askstring("Удалить студента", "Введите фамилию студента:") # Кира
+    if name:
+        if name in students:
+            del students[name]
+            save_students(file_path, students)
+            update_display()
+        else:
+            messagebox.showerror("Ошибка", "Студент не найден.")
+
 # Функция единичной отметки посещаемости
 def mark_attendance():
     name = simpledialog.askstring("Отметить посещение", "Введите фамилию студента:") # Настя
@@ -47,26 +89,11 @@ def show_attendance_percent():
     else:
         messagebox.showinfo("Процент посещаемости", "Нет данных о посещаемости.")
 
-# Функция загрузки списка студентов
-def load_students(filename):
-    if os.path.exists(filename):
-        try:
-            with open(filename, "r", encoding="utf-8") as file:
-                return json.load(file)
-        except (json.JSONDecodeError, IOError):
-            messagebox.showerror("Ошибка", "Файл поврежден или некорректный формат.") # Тимур
-            return {}
-    else:
-        return {}
-
-# Функция сохранения списка студентов
-def save_students(filename, students):
-    try:
-        with open(filename, "w", encoding="utf-8") as file:
-            json.dump(students, file, ensure_ascii=False, indent=4)
-    except IOError:
-        messagebox.showerror("Ошибка", "Не удалось сохранить данные.")
-        
+# Функция обновления дисплея
+def update_display():
+    text_box.delete("1.0", tk.END)
+    for student, records in students.items():
+        text_box.insert(tk.END, f"{student}: {records}\n")
 
 # Функция массового добавления
 def add_many_students():
@@ -95,31 +122,3 @@ def search_student():
 def on_closing():
     save_students(file_path, students)
     root.destroy()
-
-# Функция обновления дисплея
-def update_display():
-    text_box.delete("1.0", tk.END)
-    for student, records in students.items():
-        text_box.insert(tk.END, f"{student}: {records}\n")
-
-# Функция добавления студента
-def add_student():
-    name = simpledialog.askstring("Добавить студента", "Введите фамилию студента:") # Яна
-    if name:
-        if name in students:
-            messagebox.showinfo("Инфо", "Студент уже существует.")
-        else:
-            students[name] = []
-            save_students(file_path, students)
-            update_display()
-
-# Функция удаления студента
-def remove_student():
-    name = simpledialog.askstring("Удалить студента", "Введите фамилию студента:") # Кира
-    if name:
-        if name in students:
-            del students[name]
-            save_students(file_path, students)
-            update_display()
-        else:
-            messagebox.showerror("Ошибка", "Студент не найден.")
